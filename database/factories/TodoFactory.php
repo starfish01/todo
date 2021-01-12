@@ -24,6 +24,7 @@ class TodoFactory extends Factory
     {
         return [
             'title' => $this->faker->title,
+            'user_id' => '1',
             'description' => $this->faker->word,
             'status' => 'active'
         ];

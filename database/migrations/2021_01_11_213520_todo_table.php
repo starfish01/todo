@@ -16,6 +16,7 @@ class TodoTable extends Migration
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('user_id')->nullable()->index();
             $table->string('title', 80);
             $table->text('description');
             $table->text('status');

@@ -1,9 +1,12 @@
 <template>
   <div>
-    <overview />
-    <list-item />
-    <list-item />
-    <add-item />
+    <!-- <overview /> -->
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2">
+      <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <list-item />
+      </div>
+    </div>
+    <!-- <add-item /> -->
   </div>
 </template>
 
