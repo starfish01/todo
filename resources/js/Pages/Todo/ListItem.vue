@@ -1,6 +1,9 @@
 <template>
   <div class="p-4 todo-item" @click="onItemClicked()">
-    <div :class="checked ? 'checkedItem' : ''">Check List Item</div>
+    <div :class="todoItem.status === 'done' ? 'checkedItem' : ''">
+      {{ todoItem.title }}
+    </div>
+    {{ todoItem }}
   </div>
 </template>
 
@@ -9,14 +12,24 @@ export default {
   data() {
     return {
       checked: false,
+      sending: false,
     };
   },
+  props: ["todoItem"],
   methods: {
     onItemClicked() {
-      this.checked = !this.checked;
-      this.$inertia.get("api/data").then((response) => {
-        alert(response);
-      });
+      this.todoItem.status = this.todoItem.status === "done" ? "" : "done";
+
+      this.$inertia.put(
+        this.route("todos.update", this.todoItem.id),
+        {},
+        {
+          onStart: () => (this.sending = true),
+          onFinish: () => (this.sending = false),
+        }
+      );
+
+      this.$inertia.post("/todo/" + todoItem.id, todoItem);
     },
   },
   mounted() {},

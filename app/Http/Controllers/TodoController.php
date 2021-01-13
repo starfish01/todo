@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class TodoController extends Controller
 {
@@ -15,6 +17,8 @@ class TodoController extends Controller
     public function index()
     {
         //
+        $data = Todo::all();
+        return Inertia::render('Todo/Show', ['data' => $data]);
     }
 
     /**
@@ -34,17 +38,6 @@ class TodoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Todo  $todo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Todo $todo)
     {
         //
     }
@@ -70,6 +63,9 @@ class TodoController extends Controller
     public function update(Request $request, Todo $todo)
     {
         //
+        var_dump($todo);
+        die();
+        return Redirect::back()->with('success', 'Updated.');
     }
 
     /**
