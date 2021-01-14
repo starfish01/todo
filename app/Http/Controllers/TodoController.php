@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+
 
 class TodoController extends Controller
 {
@@ -62,9 +64,17 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
+        // $status = $request->status ? 'done' : '';
         //
-        var_dump($todo);
-        die();
+        // Request::validate([]);
+        $todo->update(
+            $request->all()
+            // $request->validate(
+            //     [
+            //         'status' => ['required', 'max:50'],
+            //     ]
+            // )
+        );
         return Redirect::back()->with('success', 'Updated.');
     }
 

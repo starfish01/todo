@@ -361,8 +361,8 @@
 
       <!-- Page Content -->
       <main>
+        <flash-messages />
         <slot></slot>
-        ====<flash-messages />===
       </main>
 
       <!-- Modal Portal -->

@@ -18,18 +18,17 @@ export default {
   props: ["todoItem"],
   methods: {
     onItemClicked() {
-      this.todoItem.status = this.todoItem.status === "done" ? "" : "done";
+      this.todoItem.status =
+        this.todoItem.status === "done" ? "not done" : "done";
 
       this.$inertia.put(
         this.route("todos.update", this.todoItem.id),
-        {},
+        this.todoItem,
         {
           onStart: () => (this.sending = true),
           onFinish: () => (this.sending = false),
         }
       );
-
-      this.$inertia.post("/todo/" + todoItem.id, todoItem);
     },
   },
   mounted() {},

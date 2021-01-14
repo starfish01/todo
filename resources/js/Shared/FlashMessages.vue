@@ -1,8 +1,7 @@
 <template>
-  <div>
-    {{ $page }}
+  <div class="flash">
     <div
-      v-if="$page.flash.success && show"
+      v-if="$page.props.flash.success && show"
       class="mb-8 flex items-center justify-between bg-green-500 rounded max-w-3xl"
     >
       <div class="flex items-center">
@@ -14,7 +13,7 @@
           <polygon points="0 11 2 9 7 14 18 3 20 5 7 18" />
         </svg>
         <div class="py-4 text-white text-sm font-medium">
-          {{ $page.flash.success }}
+          {{ $page.props.flash.success }}
         </div>
       </div>
       <button type="button" class="group mr-2 p-2" @click="show = false">
@@ -31,8 +30,11 @@
         </svg>
       </button>
     </div>
-    <div
-      v-if="($page.flash.error || Object.keys($page.errors).length > 0) && show"
+    <!-- <div
+      v-if="
+        ($page.props.flash.error || Object.keys($page.errors).length > 0) &&
+        show
+      "
       class="mb-8 flex items-center justify-between bg-red-500 rounded max-w-3xl"
     >
       <div class="flex items-center">
@@ -49,7 +51,7 @@
           v-if="$page.flash.error"
           class="py-4 text-white text-sm font-medium"
         >
-          {{ $page.flash.error }}
+          {{ $page.props.flash.error }}
         </div>
         <div v-else class="py-4 text-white text-sm font-medium">
           <span v-if="Object.keys($page.errors).length === 1"
@@ -73,7 +75,7 @@
           />
         </svg>
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -85,12 +87,24 @@ export default {
     };
   },
   watch: {
-    "$page.flash": {
+    "$page.props.flash": {
       handler() {
         this.show = true;
+        setTimeout(() => {
+          this.show = false;
+        }, 3000);
       },
       deep: true,
     },
   },
 };
 </script>
+<style>
+.flash {
+  position: absolute;
+  top: 0;
+  margin-top: 10px;
+  margin-right: 10px;
+  right: 0;
+}
+</style>
