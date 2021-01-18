@@ -15,7 +15,11 @@
             :todoItem="item"
           />
         </div>
+        <add-item v-if="addItemField" v-on:addItem="itemToAdd" />
       </div>
+    </div>
+    <div class="add-button" @click="onAddItemClick()" v-if="!addItemField">
+      <i class="fas fa-plus fa-2x"></i>
     </div>
   </app-layout>
 </template>
@@ -23,13 +27,62 @@
 <script>
 import AppLayout from "@/Layouts/AppLayout";
 import ListItem from "@/Pages/Todo/ListItem";
+import AddItem from "@/Pages/Todo/AddItem";
 
 export default {
   props: ["data"],
+  data() {
+    return {
+      addItemField: false,
+    };
+  },
+  methods: {
+    itemToAdd(todoItemBeingAdded) {
+      this.addItemField = false;
 
+      this.$inertia.post(
+        this.route("todos.store"),
+        { title: todoItemBeingAdded, description: todoItemBeingAdded },
+        {
+          onStart: () => (this.sending = true),
+          onFinish: () => (this.sending = false),
+        }
+      );
+    },
+    onAddItemClick() {
+      this.addItemField = true;
+    },
+  },
   components: {
     AppLayout,
     ListItem,
+    AddItem,
   },
 };
+
+AddItem;
 </script>
+<style scoped lang="scss">
+.add-button {
+  background: red;
+  position: absolute;
+  padding: 20px;
+  justify-content: center;
+  right: 6%;
+  bottom: 6%;
+  border-radius: 60px;
+  height: 100px;
+  width: 100px;
+  display: flex;
+  cursor: pointer;
+  .fas.fa-plus.fa-2x {
+    margin: auto;
+  }
+  &:hover {
+    background: yellow;
+    .fas.fa-plus.fa-2x {
+      animation: spin 4s linear;
+    }
+  }
+}
+</style>

@@ -26,8 +26,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'password'
     ];
+
+    public function todo()
+    {
+        return $this->belongsTo(Todo::class);
+    }
 
     /**
      * The attributes that should be hidden for arrays.

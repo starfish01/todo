@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Todo;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -41,7 +42,32 @@ class TodoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // $request->description = '---';
+        // $request->status = 'not done';
+        Request::validate(
+            [
+                'title' => ['required', 'max:50']
+            ]
+        );
+
+        Auth::user()->todo()->create(
+            // Request::validate(
+            //     [
+            //         'title' => ['required', 'max:50'],
+            //         'description' => ['required', 'max:50'],
+            //         'status' => ['required', 'max:50']
+            //     ]
+            // )
+            [
+                'user_id' => Auth::user()->id,
+                'title' => Request::get('title'),
+                'description' => Request::get('title'),
+                'status' => ''
+            ]
+        );
+
+        return Redirect::route('todos')->with('success', 'Todo created.');
     }
 
     /**

@@ -39,3 +39,7 @@ Route::get('todos', [TodoController::class, 'index'])
 Route::put('todos/{todo}', [TodoController::class, 'update'])
     ->name('todos.update')
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::post('todos/', [TodoController::class, 'store'])
+    ->name('todos.store')
+    ->middleware(['auth:sanctum', 'verified']);
