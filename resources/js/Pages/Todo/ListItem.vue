@@ -1,9 +1,15 @@
 <template>
-  <div class="p-4 todo-item" @click="onItemClicked()">
-    <div :class="todoItem.status === 'done' ? 'checkedItem' : ''">
+  <div class="p-4 todo-item grid grid-cols-3">
+    <div
+      @click="onItemClicked()"
+      :class="todoItem.status === 'done' ? 'checkedItem' : ''"
+    >
       {{ todoItem.title }}
     </div>
-    {{ todoItem }}
+    <div @click="onDeleteItem()">
+      <i class="fas fa-trash"></i>
+    </div>
+    <!-- {{ todoItem }} -->
   </div>
 </template>
 
@@ -17,6 +23,16 @@ export default {
   },
   props: ["todoItem"],
   methods: {
+    onDeleteItem() {
+      this.$inertia.delete(
+        this.route("todos.destroy", this.todoItem.id),
+        this.todoItem,
+        {
+          onStart: () => (this.sending = true),
+          onFinish: () => (this.sending = false),
+        }
+      );
+    },
     onItemClicked() {
       this.todoItem.status =
         this.todoItem.status === "done" ? "not done" : "done";
@@ -35,9 +51,11 @@ export default {
 };
 </script>
 
-<style >
+<style lang="scss" scoped>
 .todo-item {
-  cursor: pointer;
+  div {
+    cursor: pointer;
+  }
 }
 
 .checkedItem {

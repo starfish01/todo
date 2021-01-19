@@ -63,7 +63,7 @@ class TodoController extends Controller
                 'user_id' => Auth::user()->id,
                 'title' => Request::get('title'),
                 'description' => Request::get('title'),
-                'status' => ''
+                'status' => 'not done'
             ]
         );
 
@@ -90,17 +90,25 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
+        $this->authorize('update', $todo);
+
+        $todo->update(
+            Request::validate([
+                'status' => ['required', 'max:50'],
+            ])
+        );
+
         // $status = $request->status ? 'done' : '';
         //
         // Request::validate([]);
-        $todo->update(
-            $request->all()
-            // $request->validate(
-            //     [
-            //         'status' => ['required', 'max:50'],
-            //     ]
-            // )
-        );
+        // $todo->update(
+        //     $request->all()
+        //     // $request->validate(
+        //     //     [
+        //     //         'status' => ['required', 'max:50'],
+        //     //     ]
+        //     // )
+        // );
         return Redirect::back()->with('success', 'Updated.');
     }
 
@@ -113,5 +121,8 @@ class TodoController extends Controller
     public function destroy(Todo $todo)
     {
         //
+        $this->authorize('update', $todo);
+        $todo->delete();
+        return Redirect::back()->with('success', 'Deleted.');
     }
 }

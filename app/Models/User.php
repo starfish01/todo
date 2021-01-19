@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->belongsTo(Todo::class);
     }
 
+    public function todos()
+    {
+        return $this->hasMany(Todo::class, 'user_id');
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -23,6 +23,12 @@
                 >
                   Dashboard
                 </jet-nav-link>
+                <jet-nav-link
+                  :href="route('todos')"
+                  :active="route().current('todos')"
+                >
+                  Todo
+                </jet-nav-link>
               </div>
             </div>
 

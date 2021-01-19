@@ -43,3 +43,7 @@ Route::put('todos/{todo}', [TodoController::class, 'update'])
 Route::post('todos/', [TodoController::class, 'store'])
     ->name('todos.store')
     ->middleware(['auth:sanctum', 'verified']);
+
+Route::delete('todos/{todo}', [TodoController::class, 'destroy'])
+    ->name('todos.destroy')
+    ->middleware(['auth:sanctum', 'verified']);
