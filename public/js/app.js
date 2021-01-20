@@ -5392,11 +5392,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       checked: false,
-      sending: false
+      sending: false,
+      deleteItem: false
     };
   },
   props: ["todoItem"],
@@ -5404,12 +5408,12 @@ __webpack_require__.r(__webpack_exports__);
     onDeleteItem: function onDeleteItem() {
       var _this = this;
 
-      this.$inertia["delete"](this.route("todos.destroy", this.todoItem.id), this.todoItem, {
+      this.$inertia["delete"](this.route("todos.destroy", this.todoItem.id), {
         onStart: function onStart() {
-          return _this.sending = true;
+          _this.deleteItem = true;
         },
-        onFinish: function onFinish() {
-          return _this.sending = false;
+        onSuccess: function onSuccess() {
+          _this.deleteItem = false;
         }
       });
     },
@@ -5491,6 +5495,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -5498,7 +5505,8 @@ __webpack_require__.r(__webpack_exports__);
   props: ["data"],
   data: function data() {
     return {
-      addItemField: false
+      addItemField: false,
+      sending: false
     };
   },
   methods: {
@@ -5514,7 +5522,7 @@ __webpack_require__.r(__webpack_exports__);
           return _this.sending = true;
         },
         onFinish: function onFinish() {
-          return _this.sending = false;
+          _this.sending = false;
         }
       });
     },
@@ -35534,32 +35542,46 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "p-4 todo-item grid grid-cols-3" }, [
-    _c(
-      "div",
-      {
-        class: _vm.todoItem.status === "done" ? "checkedItem" : "",
-        on: {
-          click: function($event) {
-            return _vm.onItemClicked()
+  return _c(
+    "div",
+    { staticClass: "p-4 todo-item grid grid-cols-3 flex flex-wrap" },
+    [
+      _c(
+        "div",
+        {
+          class: _vm.todoItem.status === "done" ? "checkedItem" : "",
+          on: {
+            click: function($event) {
+              return _vm.onItemClicked()
+            }
           }
-        }
-      },
-      [_vm._v("\n    " + _vm._s(_vm.todoItem.title) + "\n  ")]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        on: {
-          click: function($event) {
-            return _vm.onDeleteItem()
-          }
-        }
-      },
-      [_c("i", { staticClass: "fas fa-trash" })]
-    )
-  ])
+        },
+        [_vm._v("\n    " + _vm._s(_vm.todoItem.title) + "\n  ")]
+      ),
+      _vm._v(" "),
+      !_vm.deleteItem
+        ? _c(
+            "div",
+            {
+              on: {
+                click: function($event) {
+                  return _vm.onDeleteItem()
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-trash" })]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.deleteItem
+        ? _c("div", [_c("i", { staticClass: "fas fa-spinner loading" })])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.sending
+        ? _c("div", [_c("i", { staticClass: "fas fa-spinner loading" })])
+        : _vm._e()
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -35636,7 +35658,7 @@ var render = function() {
       _c("div", [
         _c(
           "div",
-          { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2" },
+          { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2 m-5" },
           [
             _c(
               "div",
@@ -35653,7 +35675,16 @@ var render = function() {
             ),
             _vm._v(" "),
             _vm.addItemField
-              ? _c("add-item", { on: { addItem: _vm.itemToAdd } })
+              ? _c("add-item", {
+                  staticClass: "mt-5",
+                  on: { addItem: _vm.itemToAdd }
+                })
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.sending
+              ? _c("div", { staticClass: "mt-5" }, [
+                  _c("i", { staticClass: "fas fa-spinner loading" })
+                ])
               : _vm._e()
           ],
           1

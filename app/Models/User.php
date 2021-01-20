@@ -39,6 +39,11 @@ class User extends Authenticatable
         return $this->hasMany(Todo::class, 'user_id');
     }
 
+    public function accessibleTodos()
+    {
+        return Todo::where('user_id', $this->id)->orderBy('status', 'desc')->get();
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

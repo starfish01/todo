@@ -7,7 +7,7 @@
     </template>
 
     <div>
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2">
+      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-2 m-5">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
           <list-item
             v-for="(item, index) in data"
@@ -15,7 +15,10 @@
             :todoItem="item"
           />
         </div>
-        <add-item v-if="addItemField" v-on:addItem="itemToAdd" />
+        <add-item class="mt-5" v-if="addItemField" v-on:addItem="itemToAdd" />
+        <div v-if="sending" class="mt-5">
+          <i class="fas fa-spinner loading"></i>
+        </div>
       </div>
     </div>
     <div class="add-button" @click="onAddItemClick()" v-if="!addItemField">
@@ -34,6 +37,7 @@ export default {
   data() {
     return {
       addItemField: false,
+      sending: false,
     };
   },
   methods: {
@@ -45,7 +49,9 @@ export default {
         { title: todoItemBeingAdded, description: todoItemBeingAdded },
         {
           onStart: () => (this.sending = true),
-          onFinish: () => (this.sending = false),
+          onFinish: () => {
+            this.sending = false;
+          },
         }
       );
     },
