@@ -26,24 +26,22 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
 
-// Route::middleware(['auth:sanctum', 'verified'])->resource('todo', TodoController::class);
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
-Route::get('todos', [TodoController::class, 'index'])
-    ->name('todos')
-    ->middleware(['auth:sanctum', 'verified']);
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::put('todos/{todo}', [TodoController::class, 'update'])
-    ->name('todos.update')
-    ->middleware(['auth:sanctum', 'verified']);
+    Route::get('todos', [TodoController::class, 'index'])
+        ->name('todos');
 
-Route::post('todos/', [TodoController::class, 'store'])
-    ->name('todos.store')
-    ->middleware(['auth:sanctum', 'verified']);
+    Route::put('todos/{todo}', [TodoController::class, 'update'])
+        ->name('todos.update');
 
-Route::delete('todos/{todo}', [TodoController::class, 'destroy'])
-    ->name('todos.destroy')
-    ->middleware(['auth:sanctum', 'verified']);
+    Route::post('todos/', [TodoController::class, 'store'])
+        ->name('todos.store');
+
+    Route::delete('todos/{todo}', [TodoController::class, 'destroy'])
+        ->name('todos.destroy');
+});
